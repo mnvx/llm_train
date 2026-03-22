@@ -1,0 +1,60 @@
+name: Daily market data fetch
+
+on:
+  schedule:
+    # Run once an hour every day
+    - cron: "0 * * * *"
+
+  # Allow manual trigger with optional date override
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Target date (YYYY-MM-DD). Leave empty for last trading day."
+        required: false
+        default: ""
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to push the commit
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create virtualenv and install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
+
+      - name: Fetch data
+        env:
+          TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
+        run: |
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            python fetch.py --date "${{ github.event.inputs.date }}"
+          else
+            python fetch.py
+          fi
+
+      - name: Validate output
+        run: python validate.py
+
+      - name: Commit and push
+        run: |
+          git config user.name  "market-bot"
+          git config user.email "market-bot@users.noreply.github.com"
+          git add data/
+          # Only commit if there are actual changes
+          git diff --cached --quiet && echo "No new data, skipping commit." || \
+            git commit -m "data: $(date -u +'%Y-%m-%d %H:%M') update"
+          git push
