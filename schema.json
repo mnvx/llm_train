@@ -5,46 +5,145 @@
   "timezone": "UTC",
   "source": "Twelve Data API (https://twelvedata.com)",
   "update_cadence": "Daily after NYSE close (~21:30 UTC, Mon–Fri)",
-
   "files": {
     "daily.jsonl": {
       "description": "One record per trading day. Appended to daily — never rewritten.",
       "fields": {
-        "date":        { "type": "string",  "format": "YYYY-MM-DD",           "example": "2024-01-15" },
-        "symbol":      { "type": "string",                                      "example": "AAPL" },
-        "o":           { "type": "number",  "description": "Open price" },
-        "h":           { "type": "number",  "description": "High price" },
-        "l":           { "type": "number",  "description": "Low price" },
-        "c":           { "type": "number",  "description": "Close price" },
-        "v":           { "type": "integer", "description": "Volume. null for some crypto feeds." },
-        "rsi14":       { "type": "number",  "description": "RSI with 14-period lookback. null if insufficient history." },
-        "macd":        { "type": "number",  "description": "MACD line (12/26/9 default)" },
-        "macd_signal": { "type": "number",  "description": "MACD signal line" },
-        "macd_hist":   { "type": "number",  "description": "MACD histogram (macd - signal)" },
-        "bb_upper":    { "type": "number",  "description": "Bollinger Band upper (20-period, 2σ)" },
-        "bb_mid":      { "type": "number",  "description": "Bollinger Band middle (20-period SMA)" },
-        "bb_lower":    { "type": "number",  "description": "Bollinger Band lower (20-period, 2σ)" },
-        "atr14":       { "type": "number",  "description": "Average True Range, 14-period" },
-        "fetched_at":  { "type": "string",  "format": "ISO8601 UTC",           "example": "2024-01-15T21:35:02Z" }
+        "date": {
+          "type": "string",
+          "format": "YYYY-MM-DD",
+          "example": "2024-01-15"
+        },
+        "symbol": {
+          "type": "string",
+          "example": "AAPL"
+        },
+        "o": {
+          "type": "number",
+          "description": "Open price"
+        },
+        "h": {
+          "type": "number",
+          "description": "High price"
+        },
+        "l": {
+          "type": "number",
+          "description": "Low price"
+        },
+        "c": {
+          "type": "number",
+          "description": "Close price"
+        },
+        "v": {
+          "type": "integer",
+          "description": "Volume. null for some crypto feeds."
+        },
+        "rsi14": {
+          "type": "number",
+          "description": "RSI with 14-period lookback. null if insufficient history."
+        },
+        "macd": {
+          "type": "number",
+          "description": "MACD line (12/26/9 default)"
+        },
+        "macd_signal": {
+          "type": "number",
+          "description": "MACD signal line"
+        },
+        "macd_hist": {
+          "type": "number",
+          "description": "MACD histogram (macd - signal)"
+        },
+        "bb_upper": {
+          "type": "number",
+          "description": "Bollinger Band upper (20-period, 2σ)"
+        },
+        "bb_mid": {
+          "type": "number",
+          "description": "Bollinger Band middle (20-period SMA)"
+        },
+        "bb_lower": {
+          "type": "number",
+          "description": "Bollinger Band lower (20-period, 2σ)"
+        },
+        "atr14": {
+          "type": "number",
+          "description": "Average True Range, 14-period"
+        },
+        "fetched_at": {
+          "type": "string",
+          "format": "ISO8601 UTC",
+          "example": "2024-01-15T21:35:02Z"
+        }
       }
     },
     "minutes/YYYY-MM-DD.jsonl": {
       "description": "One file per trading day. Contains all 1-minute OHLCV bars for that session. Created the day after the session (T+1).",
       "fields": {
-        "t": { "type": "string",  "format": "YYYY-MM-DD HH:MM:SS", "description": "Bar open timestamp (UTC)" },
-        "o": { "type": "number",  "description": "Open" },
-        "h": { "type": "number",  "description": "High" },
-        "l": { "type": "number",  "description": "Low" },
-        "c": { "type": "number",  "description": "Close" },
-        "v": { "type": "integer", "description": "Volume. null for some crypto feeds." }
+        "t": {
+          "type": "string",
+          "format": "YYYY-MM-DD HH:MM:SS",
+          "description": "Bar open timestamp (UTC)"
+        },
+        "o": {
+          "type": "number",
+          "description": "Open"
+        },
+        "h": {
+          "type": "number",
+          "description": "High"
+        },
+        "l": {
+          "type": "number",
+          "description": "Low"
+        },
+        "c": {
+          "type": "number",
+          "description": "Close"
+        },
+        "v": {
+          "type": "integer",
+          "description": "Volume. null for some crypto feeds."
+        },
+        "rsi14": {
+          "type": "number",
+          "description": "RSI with 14-period lookback. null if insufficient history."
+        },
+        "macd": {
+          "type": "number",
+          "description": "MACD line (12/26/9 default)"
+        },
+        "macd_signal": {
+          "type": "number",
+          "description": "MACD signal line"
+        },
+        "macd_hist": {
+          "type": "number",
+          "description": "MACD histogram (macd - signal)"
+        },
+        "bb_upper": {
+          "type": "number",
+          "description": "Bollinger Band upper (20-period, 2σ)"
+        },
+        "bb_mid": {
+          "type": "number",
+          "description": "Bollinger Band middle (20-period SMA)"
+        },
+        "bb_lower": {
+          "type": "number",
+          "description": "Bollinger Band lower (20-period, 2σ)"
+        },
+        "atr14": {
+          "type": "number",
+          "description": "Average True Range, 14-period"
+        }
       },
       "expected_rows": {
-        "AAPL":    "~390 (09:30–16:00 ET, excluding pre/post market)",
+        "AAPL": "~390 (09:30–16:00 ET, excluding pre/post market)",
         "BTC-USD": "1440 (24h × 60min)"
       }
     }
   },
-
   "known_caveats": [
     "demo API key has rate limits — indicators may occasionally be null on first fetch",
     "Stock splits and dividends are NOT adjusted retroactively in this dataset",
