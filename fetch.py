@@ -16,7 +16,7 @@ import requests
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-API_KEY   = os.getenv("TWELVEDATA_API_KEY", "demo")
+API_KEY   = os.getenv("TWELVEDATA_API_KEY") or "demo"
 BASE_URL  = "https://api.twelvedata.com"
 DATA_DIR  = Path(__file__).parent / "data"
 

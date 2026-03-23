@@ -1,4 +1,4 @@
-name: Daily market data fetch
+name: Hourly market data fetch
 
 on:
   schedule:
